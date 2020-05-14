@@ -15,10 +15,10 @@ import java.util.List;
 
 public class AppAdapter extends BaseAdapter {
     Context context;
-    List<AppObject> appList;
+    List<AppInfo> appList;
     int cellHeight;
 
-    public AppAdapter(Context context, List<AppObject> appList, int cellHeight){
+    public AppAdapter(Context context, List<AppInfo> appList, int cellHeight){
         this.context = context;
         this.appList = appList;
         this.cellHeight = cellHeight;
@@ -58,8 +58,8 @@ public class AppAdapter extends BaseAdapter {
         mLayout.setLayoutParams(lp);
 
         //Posición del texto y logo de las apps
-        mImage.setImageDrawable(appList.get(position).getImage());
-        mLabel.setText(appList.get(position).getName());
+        mImage.setImageDrawable(appList.get(position).getIcon());
+        mLabel.setText(appList.get(position).getLabel());
 
         //Para abrir apps
         mLayout.setOnClickListener(new View.OnClickListener() {

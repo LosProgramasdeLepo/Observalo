@@ -1,6 +1,10 @@
+
 package com.example.observalo;
 
+import android.content.ComponentName;
+import android.content.Context;
 import android.content.Intent;
+import android.content.pm.PackageManager;
 import android.content.pm.ResolveInfo;
 import android.graphics.Point;
 import android.graphics.drawable.Drawable;
@@ -9,23 +13,26 @@ import android.support.design.widget.BottomSheetBehavior;
 import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.view.WindowManager;
 import android.widget.GridView;
+import android.widget.Toast;
 
 import java.util.ArrayList;
 import java.util.List;
 
 public class MainActivity extends AppCompatActivity {
+
     boolean isBottom = true;
     ViewPager mViewPager;
     int cellHeight;
     int numberOfRows = 5;
 
-    List<AppObject> installedAppList = new ArrayList<>();
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+        ArrayList<AppInfo> listaDeApps = getListaDeApps(this); //crear la lista de aplicaciones EL CONTEXTO PUEDE ESTAR MAL, NECESITA SER PROBADO
+
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
@@ -33,79 +40,35 @@ public class MainActivity extends AppCompatActivity {
         getSupportActionBar().hide();
 
         //Inicializa la Home
-        initializeHome();
-        initializeDrawer();
+        initializeHome(listaDeApps);
     }
 
-    private void initializeHome() {
+    private void initializeHome(ArrayList<AppInfo> listaDeApps) {
+
+        //a continuación se van a crear algnos pagerObjects, cada uno por una página
         ArrayList<PagerObject> pagerAppList = new ArrayList<>();
-        ArrayList<AppObject> appList = new ArrayList<>();
-        for (int i = 0; i<20; i++)
-            appList.add(new AppObject("", "", getResources().getDrawable(R.drawable.ic_launcher_foreground)));
-
-        //Cantidad de páginas
-        pagerAppList.add(new PagerObject(appList));
-        pagerAppList.add(new PagerObject(appList));
-        pagerAppList.add(new PagerObject(appList));
-
+        int k = 0;
+        float cantApps = listaDeApps.size();
+        //loop para crear todas las páginas con las aplicaciones:
+        for (int i = 0; i < Math.ceil(cantApps/20); i++) {
+            ArrayList<AppInfo> appList = new ArrayList<>(); //lista para una página
+            for (int j = 0; j < 20; j++) {
+                if(k < cantApps) {
+                    appList.add(listaDeApps.get(k));
+                    k++;
+                }
+            }
+            pagerAppList.add(new PagerObject(appList));
+        }
         //Define la altura de la pantalla
         cellHeight = getDisplayContentHeight() / numberOfRows;
 
         final GridView mDrawerGridView = findViewById(R.id.grid);
         mViewPager = findViewById(R.id.viewPager);
+
+
         mViewPager.setAdapter(new ViewPagerAdapter(this, pagerAppList, cellHeight));
 
-
-    }
-
-
-    private void initializeDrawer(){
-        View mBottomSheet = findViewById(R.id.bottomSheet);
-        final GridView mDrawerGridView = findViewById(R.id.drawerGrid);
-        final BottomSheetBehavior mBottomSheetBehavior = BottomSheetBehavior.from(mBottomSheet);
-        mBottomSheetBehavior.setHideable(false);
-        mBottomSheetBehavior.setPeekHeight(100);
-
-        installedAppList = getInstalledAppList();
-        mDrawerGridView.setAdapter(new AppAdapter(getApplicationContext(), installedAppList, cellHeight));
-
-        mBottomSheetBehavior.setBottomSheetCallback(new BottomSheetBehavior.BottomSheetCallback() {
-            @Override
-            public void onStateChanged(@NonNull View bottomSheet, int newState) {
-                if(newState==BottomSheetBehavior.STATE_HIDDEN && mDrawerGridView.getChildAt(0).getY() != 0)
-                    mBottomSheetBehavior.setState(BottomSheetBehavior.STATE_EXPANDED);
-                if(newState==BottomSheetBehavior.STATE_DRAGGING && mDrawerGridView.getChildAt(0).getY() != 0)
-                    mBottomSheetBehavior.setState(BottomSheetBehavior.STATE_EXPANDED);
-            }
-
-            @Override
-            public void onSlide(@NonNull View bottomSheet, float slideOffset) {
-
-            }
-        });
-    }
-
-
-    //Detecta las aplicaciones instaladas y las guarda
-    private List<AppObject> getInstalledAppList() {
-        List<AppObject> list = new ArrayList<>();
-
-        Intent intent = new Intent(Intent.ACTION_MAIN, null);
-        intent.addCategory(Intent.CATEGORY_LAUNCHER);
-        List<ResolveInfo> untreatedAppList = getApplicationContext().getPackageManager().queryIntentActivities(intent, 0);
-
-            for(ResolveInfo untreatedApp : untreatedAppList) {
-                String appName = untreatedApp.activityInfo.loadLabel(getPackageManager()).toString();
-                String appPackageName = untreatedApp.activityInfo.packageName;
-                Drawable appImage = untreatedApp.activityInfo.loadIcon(getPackageManager());
-                AppObject app = new AppObject(appPackageName, appName, appImage);
-
-                if(!list.contains(app)){
-                    list.add(app);
-                }
-            }
-
-        return list;
     }
 
     //Busca la altura donde debería poner las apps
@@ -133,5 +96,40 @@ public class MainActivity extends AppCompatActivity {
         //Saca el valor y
         screenHeight = size.y;
         return  screenHeight - contentTop - actionBarHeight - statusBarHeight;
+    }
+
+    //Función que devuelve el ícono de una aplicación
+    //Hay que ver cómo hacer para cambiar algunos por los propios
+    //(Parte de este código no se entiende, así que cuidadito al modificar)
+    public static Drawable getActivityIcon(Context context, String packageName, String activityName) {
+        PackageManager pm = context.getPackageManager();
+        Intent intent = new Intent();
+        intent.setComponent(new ComponentName(packageName, activityName));
+        ResolveInfo resolveInfo = pm.resolveActivity(intent, 0);
+        return resolveInfo.loadIcon(pm);
+    }
+
+    //La siguiente función devuelve la lista de aplicaciones del sistema
+    //Cada aplicación está guardada como un "AppInfo" (clase nuestra)
+    //Los datos por ahora son: título, nombre de paquete e ícono, aunque también debería tener uno para el color de fondo
+    public ArrayList<AppInfo> getListaDeApps(Context c) {
+        PackageManager pm = c.getPackageManager();
+        ArrayList<AppInfo> appsList = new ArrayList<AppInfo>();
+
+        Intent i = new Intent(Intent.ACTION_MAIN, null);
+        i.addCategory(Intent.CATEGORY_LAUNCHER);
+
+        List<ResolveInfo> allApps = pm.queryIntentActivities(i, 0);
+
+        //Lo siguiente es un for que pasa por todas las aplicaciones y crea un coso para cada una
+        for(ResolveInfo ri:allApps) {
+            String label = ri.loadLabel(pm).toString();
+            String packageName = ri.activityInfo.packageName;
+            Drawable icon = ri.activityInfo.loadIcon(pm);
+            AppInfo app = new AppInfo(label, packageName, icon);
+            appsList.add(app);
+        }
+
+        return appsList;
     }
 }
