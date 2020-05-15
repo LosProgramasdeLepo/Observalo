@@ -17,7 +17,7 @@
         <android.support.v4.view.ViewPager
             android:id="@+id/viewPager"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"></android.support.v4.view.ViewPager>
+            android:layout_height="wrap_content" />
     </LinearLayout>
 
     <FrameLayout
@@ -26,15 +26,6 @@
         android:layout_height="wrap_content"
         style="@style/Widget.Design.BottomSheet.Modal"
         app:layout_behavior="@string/bottom_sheet_behavior">
-
-        <GridView
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:id="@+id/drawerGrid"
-            android:numColumns="4"
-            android:stretchMode="columnWidth"
-            android:layout_gravity="center">
-        </GridView>
 
     </FrameLayout>
 

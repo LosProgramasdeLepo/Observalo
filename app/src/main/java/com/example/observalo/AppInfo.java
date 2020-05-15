@@ -1,6 +1,8 @@
 package com.example.observalo;
 
 import android.graphics.drawable.Drawable;
+import android.graphics.drawable.ScaleDrawable;
+import android.widget.ImageView;
 
 public class AppInfo {
     private String label;

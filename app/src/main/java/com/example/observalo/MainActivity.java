@@ -41,6 +41,7 @@ public class MainActivity extends AppCompatActivity {
 
         //Inicializa la Home
         initializeHome(listaDeApps);
+
     }
 
     private void initializeHome(ArrayList<AppInfo> listaDeApps) {
@@ -50,9 +51,9 @@ public class MainActivity extends AppCompatActivity {
         int k = 0;
         float cantApps = listaDeApps.size();
         //loop para crear todas las páginas con las aplicaciones:
-        for (int i = 0; i < Math.ceil(cantApps/20); i++) {
+        for (int i = 0; i < Math.ceil(cantApps/15); i++) {
             ArrayList<AppInfo> appList = new ArrayList<>(); //lista para una página
-            for (int j = 0; j < 20; j++) {
+            for (int j = 0; j < 15; j++) {
                 if(k < cantApps) {
                     appList.add(listaDeApps.get(k));
                     k++;
@@ -63,7 +64,7 @@ public class MainActivity extends AppCompatActivity {
         //Define la altura de la pantalla
         cellHeight = getDisplayContentHeight() / numberOfRows;
 
-        final GridView mDrawerGridView = findViewById(R.id.grid);
+        final GridView mPagerGridView = findViewById(R.id.grid);
         mViewPager = findViewById(R.id.viewPager);
 
 
