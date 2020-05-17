@@ -16,13 +16,16 @@ import java.util.ArrayList;
 public class ViewPagerAdapter extends PagerAdapter {
     Context context;
     ArrayList<PagerObject> pagerAppList;
+    int cellWidth;
     int cellHeight;
+    int verticalSpacing;
 
-
-    public ViewPagerAdapter(Context context, ArrayList<PagerObject> pagerAppList, int cellHeight) {
+    public ViewPagerAdapter(Context context, ArrayList<PagerObject> pagerAppList, int cellWidth, int cellHeight, int verticalSpacing) {
         this.context = context;
         this.pagerAppList = pagerAppList;
+        this.cellWidth = cellWidth;
         this.cellHeight = cellHeight;
+        this.verticalSpacing = verticalSpacing;
     }
 
     @NonNull
@@ -32,7 +35,8 @@ public class ViewPagerAdapter extends PagerAdapter {
         ViewGroup layout = (ViewGroup) inflater.inflate(R.layout.pager_layout, container, false);
 
         final GridView mGridView = layout.findViewById(R.id.grid);
-        mGridView.setAdapter(new AppAdapter(context, pagerAppList.get(position).getAppList(), cellHeight));
+        mGridView.setVerticalSpacing(verticalSpacing);
+        mGridView.setAdapter(new AppAdapter(context, pagerAppList.get(position).getAppList(), cellWidth, cellHeight));
 
         container.addView(layout);
         return layout;
