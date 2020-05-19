@@ -19,13 +19,15 @@ public class ViewPagerAdapter extends PagerAdapter {
     int cellWidth;
     int cellHeight;
     int verticalSpacing;
+    int numberOfCols;
 
-    public ViewPagerAdapter(Context context, ArrayList<PagerObject> pagerAppList, int cellWidth, int cellHeight, int verticalSpacing) {
+    public ViewPagerAdapter(Context context, ArrayList<PagerObject> pagerAppList, int cellWidth, int cellHeight, int numberOfCols,  int verticalSpacing) {
         this.context = context;
         this.pagerAppList = pagerAppList;
         this.cellWidth = cellWidth;
-        this.cellHeight = cellHeight;
         this.verticalSpacing = verticalSpacing;
+        this.numberOfCols = numberOfCols;
+        this.cellHeight = cellHeight;
     }
 
     @NonNull
@@ -36,6 +38,7 @@ public class ViewPagerAdapter extends PagerAdapter {
 
         final GridView mGridView = layout.findViewById(R.id.grid);
         mGridView.setVerticalSpacing(verticalSpacing);
+        mGridView.setNumColumns(numberOfCols);
         mGridView.setAdapter(new AppAdapter(context, pagerAppList.get(position).getAppList(), cellWidth, cellHeight));
 
         container.addView(layout);

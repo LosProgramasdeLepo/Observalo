@@ -29,7 +29,17 @@ public class AppInfo {
         this.label = label;
         this.packageName = packageName;
         this.icon = icon;
-        this.primaryColor = getDominantColor2(drawableToBitmap(icon));
+
+        float[] hsv = new float[3];
+        int color = getDominantColor2(drawableToBitmap(icon));
+        Color.colorToHSV(color, hsv);
+        //hsv[2] += 15f - hsv[2]; // value component
+        hsv[1] = 0.6f;
+        hsv[2] = 0.9f;
+
+        color = Color.HSVToColor(hsv);
+
+        this.primaryColor = color;
     }
 
     public String getPackageName(){

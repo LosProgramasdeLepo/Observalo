@@ -31,14 +31,17 @@ public class MainActivity extends AppCompatActivity {
 
     boolean isBottom = true;
     ViewPager mViewPager;
+
     int cellWidth;
     int cellHeight;
-    int verticalSpacing = 5;
-    int numberOfRows = 5;
-    int cantAppsEnPantalla = 15;
+    int verticalSpacing = 10;
+    int numberOfRows;
+    int numberOfCols = 3;
+    int cantAppsEnPantalla;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+
         ArrayList<AppInfo> listaDeApps = getListaDeApps(this);
 
         super.onCreate(savedInstanceState);
@@ -67,6 +70,14 @@ public class MainActivity extends AppCompatActivity {
 
     private void initializeHome(ArrayList<AppInfo> listaDeApps) {
 
+        //Define la altura de cada layout individual de los botones
+        cellHeight = getDisplayContentSize(false) / numberOfCols - verticalSpacing;
+        cellWidth = cellHeight;
+
+        numberOfRows = getDisplayContentSize(true) / (cellHeight+verticalSpacing); //height
+
+        cantAppsEnPantalla = numberOfCols*numberOfRows;
+
         //a continuación se van a crear algnos pagerObjects, cada uno por una página
         ArrayList<PagerObject> pagerAppList = new ArrayList<>();
         int k = 0;
@@ -83,16 +94,11 @@ public class MainActivity extends AppCompatActivity {
             pagerAppList.add(new PagerObject(appList));
         }
 
-        //Define la altura de cada layout individual de los botones
-        cellHeight = getDisplayContentSize(true) / numberOfRows - verticalSpacing*2;
-
-        cellWidth = getDisplayContentSize(false) / 3 - verticalSpacing*2;
-
         final GridView mPagerGridView = findViewById(R.id.grid);
         mViewPager = findViewById(R.id.viewPager);
 
 
-        mViewPager.setAdapter(new ViewPagerAdapter(this, pagerAppList, cellWidth, cellWidth, verticalSpacing));
+        mViewPager.setAdapter(new ViewPagerAdapter(this, pagerAppList, cellWidth, cellWidth, numberOfCols, verticalSpacing));
 
     }
 
