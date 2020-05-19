@@ -53,6 +53,8 @@ public class MainActivity extends AppCompatActivity {
         //Inicializa la Home
         initializeHome(listaDeApps);
 
+        setWallpaper();
+
     }
 
     //NO FUNCIONA, Attempt to invoke virtual method 'boolean android.graphics.Bitmap.compress(android.graphics.Bitmap$CompressFormat, int, java.io.OutputStream)' on a null object reference

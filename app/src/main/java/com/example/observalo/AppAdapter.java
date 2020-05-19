@@ -62,6 +62,7 @@ public class AppAdapter extends BaseAdapter {
 
             GradientDrawable gradientDrawable = new GradientDrawable();
             int colorPrimario = appList.get(position).getPrimaryColor();
+
             gradientDrawable.setColor(colorPrimario);
             gradientDrawable.setCornerRadius(20f);
 
