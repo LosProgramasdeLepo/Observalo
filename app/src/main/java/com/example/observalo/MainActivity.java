@@ -75,9 +75,10 @@ public class MainActivity extends AppCompatActivity {
 
         numberOfRows = getDisplayContentSize(true) / (cellHeight+verticalSpacing); //height
 
-       // debería agarrar el resto
-       // si ese resto es relativamente grande, debería achicar los botones
-        int resto =  getDisplayContentSize(true) % (cellHeight+verticalSpacing);    //obtiene el espacio restante blanco
+        // debería agarrar el resto
+        // si ese resto es relativamente grande, debería achicar los botones
+        //int resto =  getDisplayContentSize(true) % (cellHeight+verticalSpacing);    //obtiene el espacio restante blanco
+        int resto = getDisplayContentSize(true) - (cellHeight+verticalSpacing)*numberOfRows;
         if (resto > 0.7*cellHeight){                                                    //se fija si este espacio es muy grande
             cellHeight -= resto / numberOfRows;                                         //si lo es, achica a todos los botones para que entre una fila más
             numberOfRows++;                                                             //y agrega una fila más
