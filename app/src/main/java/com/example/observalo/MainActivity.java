@@ -1,4 +1,6 @@
 
+//hay que hacer que el tamaño del texto dependa del tamaño de los botones
+
 package com.example.observalo;
 
 import android.app.WallpaperManager;
@@ -79,8 +81,8 @@ public class MainActivity extends AppCompatActivity {
         // si ese resto es relativamente grande, debería achicar los botones
         int resto =  getDisplayContentSize(true) % (cellHeight+verticalSpacing);    //obtiene el espacio restante blanco
         if (resto > 0.7*cellHeight){                                                    //se fija si este espacio es muy grande
-            resto = cellHeight-resto;
-            cellHeight -= resto / numberOfRows;                                         //si lo es, achica a todos los botones para que entre una fila más
+            resto = cellHeight-resto;                                                   //si lo es, calcula el espacio que le falta para que haya un boton más
+            cellHeight -= resto / numberOfRows;                                         //achica a todos los botones para que entre una fila más
             numberOfRows++;                                                             //y agrega una fila más
         }
         cellWidth = cellHeight;

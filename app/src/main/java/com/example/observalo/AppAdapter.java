@@ -73,6 +73,7 @@ public class AppAdapter extends BaseAdapter {
             mImage.getLayoutParams().height = (int)(cellHeight*0.5);
             mImage.getLayoutParams().width = mImage.getLayoutParams().height;
             mLabel.setText(appList.get(position).getLabel());
+            mLabel.setTextSize(mImage.getLayoutParams().width * 0.115f);
             mLayout.setContentDescription(appList.get(position).getLabel());
 
             //Para abrir apps
