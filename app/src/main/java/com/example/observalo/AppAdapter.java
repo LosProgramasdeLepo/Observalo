@@ -1,10 +1,13 @@
 package com.example.observalo;
 
+import android.app.ActivityOptions;
 import android.content.Context;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.Color;
 import android.graphics.drawable.GradientDrawable;
+import android.os.Build;
+import android.support.v4.app.ActivityOptionsCompat;
 import android.view.ContextMenu;
 import android.view.LayoutInflater;
 import android.view.View;

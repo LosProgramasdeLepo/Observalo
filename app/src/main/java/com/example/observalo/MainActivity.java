@@ -3,6 +3,7 @@
 
 package com.example.observalo;
 
+import android.app.ActivityOptions;
 import android.app.WallpaperManager;
 import android.content.ComponentName;
 import android.content.Context;
@@ -13,11 +14,14 @@ import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Point;
 import android.graphics.drawable.Drawable;
+import android.os.Build;
 import android.support.annotation.NonNull;
 import android.support.design.widget.BottomSheetBehavior;
+import android.support.v4.app.ActivityOptionsCompat;
 import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.transition.Explode;
 import android.util.DisplayMetrics;
 import android.util.Log;
 import android.view.View;
@@ -38,7 +42,7 @@ public class MainActivity extends AppCompatActivity {
     int cellHeight;
     int verticalSpacing = 10;
     int numberOfRows;
-    int numberOfCols = 3;
+    int numberOfCols = 5;
     int cantAppsEnPantalla;
 
     @Override
