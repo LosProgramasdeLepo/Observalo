@@ -14,12 +14,12 @@ import android.widget.ImageView;
 import java.util.ArrayList;
 
 public class ViewPagerAdapter extends PagerAdapter {
-    Context context;
-    ArrayList<PagerObject> pagerAppList;
-    int cellWidth;
-    int cellHeight;
-    int verticalSpacing;
-    int numberOfCols;
+    private Context context;
+    private ArrayList<PagerObject> pagerAppList;
+    private int cellWidth;
+    private int cellHeight;
+    private int verticalSpacing;
+    private int numberOfCols;
 
     public ViewPagerAdapter(Context context, ArrayList<PagerObject> pagerAppList, int cellWidth, int cellHeight, int numberOfCols,  int verticalSpacing) {
         this.context = context;

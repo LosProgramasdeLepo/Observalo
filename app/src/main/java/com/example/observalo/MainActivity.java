@@ -57,7 +57,6 @@ public class MainActivity extends AppCompatActivity {
 
     }
 
-    //NO FUNCIONA, Attempt to invoke virtual method 'boolean android.graphics.Bitmap.compress(android.graphics.Bitmap$CompressFormat, int, java.io.OutputStream)' on a null object reference
     private void setWallpaper() {
         Bitmap bitmap = BitmapFactory.decodeResource(getResources(), R.drawable.face);
         WallpaperManager manager = WallpaperManager.getInstance(getApplicationContext());
@@ -71,14 +70,21 @@ public class MainActivity extends AppCompatActivity {
 
 
     private void initializeHome(ArrayList<AppInfo> listaDeApps) {
-
         //Define la altura de cada layout individual de los botones
         cellHeight = getDisplayContentSize(false) / numberOfCols - verticalSpacing;
-        cellWidth = cellHeight;
 
         numberOfRows = getDisplayContentSize(true) / (cellHeight+verticalSpacing); //height
 
         cantAppsEnPantalla = numberOfCols*numberOfRows;
+
+       // debería agarrar el resto
+       // si ese resto es relativamente grande, debería achicar los botones
+        int resto =  getDisplayContentSize(true) % (cellHeight+verticalSpacing);    //obtiene el espacio restante blanco
+        if (resto > 0.7*cellHeight){                                                    //se fija si este espacio es muy grande
+            cellHeight -= resto / numberOfRows;                                         //si lo es, achica a todos los botones para que entre una fila más
+            numberOfRows++;                                                             //y agrega una fila más
+        }
+        cellWidth = cellHeight;
 
         //a continuación se van a crear algnos pagerObjects, cada uno por una página
         ArrayList<PagerObject> pagerAppList = new ArrayList<>();
@@ -104,7 +110,7 @@ public class MainActivity extends AppCompatActivity {
 
     }
 
-    //Busca la altura que debería tener cada cuadrado de app
+    //Busca la altura de la pantalla
     private int getDisplayContentSize(boolean wh) {
         final WindowManager windowManager = getWindowManager();
         final Point size = new Point();
@@ -134,17 +140,6 @@ public class MainActivity extends AppCompatActivity {
             screenHeight = size.y;
             return screenHeight - contentTop - actionBarHeight - statusBarHeight;
         }
-    }
-
-    //Función que devuelve el ícono de una aplicación
-    //Hay que ver cómo hacer para cambiar algunos por los propios
-    //(Parte de este código no se entiende, así que cuidadito al modificar)
-    public static Drawable getActivityIcon(Context context, String packageName, String activityName) {
-        PackageManager pm = context.getPackageManager();
-        Intent intent = new Intent();
-        intent.setComponent(new ComponentName(packageName, activityName));
-        ResolveInfo resolveInfo = pm.resolveActivity(intent, 0);
-        return resolveInfo.loadIcon(pm);
     }
 
     //La siguiente función devuelve la lista de aplicaciones del sistema
