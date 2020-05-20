@@ -75,8 +75,6 @@ public class MainActivity extends AppCompatActivity {
 
         numberOfRows = getDisplayContentSize(true) / (cellHeight+verticalSpacing); //height
 
-        cantAppsEnPantalla = numberOfCols*numberOfRows;
-
        // debería agarrar el resto
        // si ese resto es relativamente grande, debería achicar los botones
         int resto =  getDisplayContentSize(true) % (cellHeight+verticalSpacing);    //obtiene el espacio restante blanco
@@ -85,6 +83,8 @@ public class MainActivity extends AppCompatActivity {
             numberOfRows++;                                                             //y agrega una fila más
         }
         cellWidth = cellHeight;
+
+        cantAppsEnPantalla = numberOfCols*numberOfRows;
 
         //a continuación se van a crear algnos pagerObjects, cada uno por una página
         ArrayList<PagerObject> pagerAppList = new ArrayList<>();
