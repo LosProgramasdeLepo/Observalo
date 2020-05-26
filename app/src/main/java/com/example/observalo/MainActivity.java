@@ -42,7 +42,7 @@ public class MainActivity extends AppCompatActivity {
     int cellHeight;
     int verticalSpacing = 10;
     int numberOfRows;
-    int numberOfCols = 5;
+    int numberOfCols = 3;
     int cantAppsEnPantalla;
 
     @Override
